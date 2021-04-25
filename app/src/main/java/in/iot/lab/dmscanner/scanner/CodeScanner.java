@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.scanner;
 
 
 import java.util.Arrays;
@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
@@ -451,7 +450,7 @@ public final class CodeScanner {
     }
 
     /**
-     * Release resources, and stop preview if needed; call this method in 
+     * Release resources, and stop preview if needed; call this method in
      */
     @MainThread
     public void releaseResources() {

@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.scanner;
 
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
-final class Utils {
+public final class Utils {
     private static final float MIN_DISTORTION = 0.3f;
     private static final float MAX_DISTORTION = 3f;
     private static final float DISTORTION_STEP = 0.1f;

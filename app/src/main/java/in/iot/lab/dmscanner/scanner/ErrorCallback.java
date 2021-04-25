@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.scanner;
 
 
 import android.app.Activity;
@@ -7,22 +7,26 @@ import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
-import com.google.zxing.Result;
 
 /**
- * Callback of the decoding process
+ * Code scanner error callback
  */
-public interface DecodeCallback {
+public interface ErrorCallback {
     /**
-     * Called when decoder has successfully decoded the code
+     * Callback to suppress errors
+     */
+    ErrorCallback SUPPRESS = new Utils.SuppressErrorCallback();
+
+    /**
+     * Called when error has occurred
      * <br>
      * Note that this method always called on a worker thread
      *
-     * @param result Encapsulates the result of decoding a barcode within an image
+     * @param error Exception that has been thrown
      * @see Handler
      * @see Looper#getMainLooper()
      * @see Activity#runOnUiThread(Runnable)
      */
     @WorkerThread
-    void onDecoded(@NonNull Result result);
+    void onError(@NonNull Exception error);
 }

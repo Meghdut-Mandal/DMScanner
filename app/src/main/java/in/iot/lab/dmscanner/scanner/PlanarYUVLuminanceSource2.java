@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.scanner;
 
 
 import com.google.zxing.LuminanceSource;

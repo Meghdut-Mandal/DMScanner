@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
 
+import in.iot.lab.dmscanner.R;
 import in.iot.lab.dmscanner.databinding.ActivityMainBinding;
+import in.iot.lab.dmscanner.scanner.CodeScanner;
 
 public class MainActivity2 extends AppCompatActivity {
 

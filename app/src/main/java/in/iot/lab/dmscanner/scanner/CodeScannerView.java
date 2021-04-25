@@ -1,4 +1,4 @@
-package in.iot.lab.dmscanner;
+package in.iot.lab.dmscanner.scanner;
 
 import android.view.ViewGroup;
 
@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.AttrRes;
@@ -22,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
+
+import in.iot.lab.dmscanner.R;
 
 /**
  * A view to display code scanner preview
