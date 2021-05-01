@@ -24,6 +24,7 @@ import java.nio.IntBuffer;
 import in.iot.lab.dmscanner.R;
 import in.iot.lab.dmscanner.databinding.ActivityMainBinding;
 import in.iot.lab.dmscanner.scanner.CodeScanner;
+import in.iot.lab.dmscanner.scanner.Utils;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -101,32 +102,6 @@ public class MainActivity2 extends AppCompatActivity {
                 REQ_CODE_PICK_IMAGE);
     }
 
-    private void decode(Bitmap img) {
-        System.out.println("DECODING");
-        int width = img.getWidth();
-        int height = img.getHeight();
-        System.out.println(img.getWidth());
-        System.out.println(img.getHeight());
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(img, (int) (img.getWidth() * 0.5), (int) (img.getHeight() * 0.5), true);
-        int midx = scaledBitmap.getWidth() / 2;
-        int midy = scaledBitmap.getHeight() / 2;
-//    	Bitmap cropImg = Bitmap.createBitmap(scaledBitmap, midx - width / 2, midy - height/2, width, height);
-        int size = scaledBitmap.getHeight() * scaledBitmap.getWidth();
-        IntBuffer buff = IntBuffer.allocate(size);
-        scaledBitmap.copyPixelsToBuffer(buff);
-        DMTXImage dmtxImage = new DMTXImage(scaledBitmap.getWidth(), scaledBitmap.getHeight(), buff.array());
-        DMTXTag[] tags = dmtxImage.getTags(5, 10000);
-        System.out.println(tags.length);
-        StringBuilder sb = new StringBuilder();
-        sb.append(tags.length + " tags found\n");
-        for (DMTXTag tag : tags) {
-            sb.append(tag.id + "\n");
-            System.out.println(tag.id);
-        }
-        String text = sb.toString();
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(text);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -137,7 +112,7 @@ public class MainActivity2 extends AppCompatActivity {
                 try {
                     InputStream inputStream = getContentResolver().openInputStream(selectedImage);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    decode(bitmap);
+                    extracted(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -145,7 +120,13 @@ public class MainActivity2 extends AppCompatActivity {
             }
         } else if (requestCode == REQ_CODE_CAMERA) {
             Bitmap img = (Bitmap) intent.getExtras().get("data");
-            decode(img);
+            extracted(img);
         }
+    }
+
+    private void extracted(Bitmap img) {
+        String text = Utils.dmtxDecode(img);
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(text);
     }
 }
