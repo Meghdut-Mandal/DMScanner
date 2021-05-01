@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "614626576227",
+    "project_id": "dmscanner10",
+    "storage_bucket": "dmscanner10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:614626576227:android:a305905ac9c879f5737556",
+        "android_client_info": {
+          "package_name": "in.iot.lab.dmscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "614626576227-u6ft6ffa3e62ieqcstsv6ul4v2dn0i3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByHBLN87gLFNhsxlACFow4ezic33ccjnc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "614626576227-u6ft6ffa3e62ieqcstsv6ul4v2dn0i3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
