@@ -1,12 +1,14 @@
 package in.iot.lab.dmscanner.scanner;
 
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.hardware.Camera.Area;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
@@ -23,6 +25,9 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+
+import org.libdmtx.DMTXImage;
+import org.libdmtx.DMTXTag;
 
 public final class Utils {
     private static final float MIN_DISTORTION = 0.3f;
@@ -324,6 +329,29 @@ public final class Utils {
         } finally {
             reader.reset();
         }
+    }
+
+    public static String dmtxDecode(Bitmap img) {
+        System.out.println("DECODING");
+        System.out.println(img.getWidth());
+        System.out.println(img.getHeight());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(img, (int) (img.getWidth() * 0.5), (int) (img.getHeight() * 0.5), true);
+        int size = scaledBitmap.getHeight() * scaledBitmap.getWidth();
+        IntBuffer buff = IntBuffer.allocate(size);
+        scaledBitmap.copyPixelsToBuffer(buff);
+        DMTXImage dmtxImage = new DMTXImage(scaledBitmap.getWidth(), scaledBitmap.getHeight(), buff.array());
+        DMTXTag[] tags = dmtxImage.getTags(5, 10000);
+        System.out.println(tags.length);
+        StringBuilder sb = new StringBuilder();
+        sb.append(tags.length + " tags found\n");
+
+        for (DMTXTag tag : tags) {
+            sb.append(tag.id + "\n");
+            System.out.println(tag.id);
+        }
+        if (tags.length == 0)
+            return null;
+        return sb.toString();
     }
 
     public static final class SuppressErrorCallback implements ErrorCallback {
