@@ -2,8 +2,8 @@ package `in`.iot.lab.dmscanner.ui
 
 import `in`.iot.lab.dmscanner.R
 import `in`.iot.lab.dmscanner.databinding.ActivityMainBinding
+import `in`.iot.lab.dmscanner.databinding.QrScannedBinding
 import `in`.iot.lab.dmscanner.scanner.CodeScanner
-import `in`.iot.lab.dmscanner.scanner.DecodeCallback
 import `in`.iot.lab.dmscanner.scanner.ErrorCallback
 import `in`.iot.lab.dmscanner.scanner.Utils
 import android.Manifest
@@ -17,7 +17,12 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.google.zxing.Result
+import org.opencv.android.OpenCVLoader
 import java.io.FileNotFoundException
 
 class MainActivity2 : AppCompatActivity() {
@@ -25,19 +30,16 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var mCodeScanner: CodeScanner
     private var mPermissionGranted = false
     override fun onCreate(savedInstanceState: Bundle?) {
+        OpenCVLoader.initDebug()
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding!!.root)
         mCodeScanner = CodeScanner(this, mainBinding!!.scannerView)
-        mCodeScanner.setDecodeCallback(DecodeCallback { result: Result ->
+        mCodeScanner.setDecodeCallback { result: Result ->
             runOnUiThread {
-//            ScanResultDialog dialog = new ScanResultDialog(this, result);
-//            dialog.setOnDismissListener(d -> mCodeScanner.startPreview());
-//            dialog.show();
-//            Toast.makeText(this," "+result.getText(),Toast.LENGTH_LONG).show();
-                mainBinding!!.textView.text = result.text
+                displayQR(result.text)
             }
-        })
+        }
         mCodeScanner.setErrorCallback(ErrorCallback { error: Exception? ->
             runOnUiThread {
                 Toast.makeText(
@@ -118,7 +120,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun extracted(img: Bitmap?) {
-        val text = Utils.dmtxDecode(img)
+        val text = Utils.dmtxDecode2(img)
         val textView = findViewById<TextView>(R.id.textView)
         textView.text = text
     }
@@ -132,5 +134,14 @@ class MainActivity2 : AppCompatActivity() {
         private const val REQ_CODE_PICK_IMAGE = 0
         private const val REQ_CODE_CAMERA = 1
         private const val RC_PERMISSION = 10
+    }
+
+    fun displayQR(qr: String) {
+        val name = qr.toByteArray().sum().toString(26)
+        MaterialDialog(this, BottomSheet()).show {
+            customView(R.layout.qr_scanned)
+            val scannedBinding = QrScannedBinding.bind(this.getCustomView())
+            scannedBinding.watchName.text="Titan $name"
+        }
     }
 }

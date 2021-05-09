@@ -18,6 +18,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -28,6 +29,14 @@ import com.google.zxing.common.HybridBinarizer;
 
 import org.libdmtx.DMTXImage;
 import org.libdmtx.DMTXTag;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfFloat;
+import org.opencv.core.MatOfInt;
+import org.opencv.imgproc.Imgproc;
+
+import static org.opencv.imgproc.Imgproc.calcHist;
 
 public final class Utils {
     private static final float MIN_DISTORTION = 0.3f;
@@ -331,7 +340,7 @@ public final class Utils {
         }
     }
 
-    public static String dmtxDecode(Bitmap img) {
+    private static String dmtxDecode(Bitmap img) {
         System.out.println("DECODING");
         System.out.println(img.getWidth());
         System.out.println(img.getHeight());
@@ -347,11 +356,60 @@ public final class Utils {
 
         for (DMTXTag tag : tags) {
             sb.append(tag.id + "\n");
-            System.out.println(tag.id);
+            System.out.println("done "+tag.id);
         }
         if (tags.length == 0)
             return null;
         return sb.toString();
+    }
+
+    public static String dmtxDecode2(Bitmap img) {
+        Mat src = new Mat();
+        org.opencv.android.Utils.bitmapToMat(img, src);
+        //convert to grey
+        Imgproc.cvtColor(src, src, Imgproc.COLOR_BGR2GRAY);
+
+        // cal greyscale histogram
+        Mat histogram = new Mat();
+        calcHist(Collections.singletonList(src), new MatOfInt(0), new Mat(), histogram, new MatOfInt(256), new MatOfFloat(0, 256));
+
+        // calculate cumulative histogram
+        ArrayList<Double> accumulator = new ArrayList<>();
+        accumulator.add(histogram.get(0, 0)[0]);
+        for (int i = 1; i < 256; i++) {
+            double last = accumulator.get(i - 1);
+            accumulator.add(histogram.get(i, 0)[0] + last);
+        }
+
+        // Locate points to clip
+        double maximum = accumulator.get(255);
+        double clipHistPercent = 1;
+        clipHistPercent *= (maximum / 100.00);
+        clipHistPercent /= 2;
+
+        // locate left cut
+        int minGrey = 0;
+        while (accumulator.get(minGrey) < clipHistPercent) {
+            minGrey++;
+        }
+
+        // locate right cut
+        int maxGrey = 255;
+        while (accumulator.get(maxGrey) >= (maximum - clipHistPercent)) {
+            maxGrey--;
+        }
+
+
+        // calculate alpha beta values
+        double alpha = 255.0 / (maxGrey - minGrey);
+        double beta = -minGrey * alpha;
+
+        Core.convertScaleAbs(src, src, alpha, beta);
+        Bitmap bmp = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.ARGB_4444);
+        org.opencv.android.Utils.matToBitmap(src,bmp);
+        src.release();
+
+        return dmtxDecode(bmp);
     }
 
     public static final class SuppressErrorCallback implements ErrorCallback {
