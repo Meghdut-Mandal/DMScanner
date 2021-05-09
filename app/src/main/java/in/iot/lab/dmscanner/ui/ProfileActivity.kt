@@ -25,6 +25,11 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.userEmail.text=UserInfo.email
         binding.userName.text=UserInfo.name
+    }
 
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }

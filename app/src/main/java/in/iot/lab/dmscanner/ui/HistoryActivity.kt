@@ -23,4 +23,9 @@ class HistoryActivity : AppCompatActivity() {
         qrItemBinding.dateField.text = SimpleDateFormat("EEE, MMM d").format(date)
         qrItemBinding.nameDevice.text = qr.deviceName
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

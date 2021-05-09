@@ -129,4 +129,10 @@ public class MainActivity2 extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
         textView.setText(text);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
