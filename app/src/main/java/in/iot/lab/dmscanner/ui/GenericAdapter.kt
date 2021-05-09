@@ -1,5 +1,6 @@
-package com.meghdut.upsilent.fragments.drive
+package `in`.iot.lab.dmscanner.ui
 
+import `in`.iot.lab.dmscanner.model.Identifiable
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.meghdut.upsilent.utils.Identifiable
 
 open class GenericAdapter<T, B : ViewBinding>(
         val bindingProvider: (LayoutInflater, ViewGroup, Boolean) -> B,

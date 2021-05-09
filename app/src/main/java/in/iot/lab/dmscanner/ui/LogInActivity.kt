@@ -5,20 +5,22 @@ import `in`.iot.lab.dmscanner.model.UserInfo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.chibatching.kotpref.blockingBulk
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.Scopes
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.math.log
 
 
 class LogInActivity : AppCompatActivity() {
 
     val providers by lazy {
         arrayListOf(
-            AuthUI.IdpConfig.GoogleBuilder().build()
+            AuthUI.IdpConfig.GoogleBuilder()
+                .setScopes(listOf(Scopes.PROFILE,Scopes.EMAIL))
+                .build()
         )
     }
     private lateinit var activityLogInBinding: ActivityLogInBinding
@@ -53,11 +55,12 @@ class LogInActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
                 val user = FirebaseAuth.getInstance().currentUser
+                val acct = GoogleSignIn.getLastSignedInAccount(this)
                 UserInfo.blockingBulk {
-                    name = user.displayName
-                    email = user.email
+                    name = user?.displayName ?:"NONE"
+                    email = user?.email  ?:"NONE"
+                    profile = (acct?.photoUrl?.toString()) ?:"NONE"
                 }
                 startMainActivity()
             } else {
@@ -67,7 +70,7 @@ class LogInActivity : AppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        val intent = Intent(this, MainActivity2::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }

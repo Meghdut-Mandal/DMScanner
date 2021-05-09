@@ -5,5 +5,5 @@ import com.chibatching.kotpref.KotprefModel
 object UserInfo : KotprefModel() {
     var email by stringPref("NONE")
     var name by stringPref("NONE")
-
+    var profile by stringPref("NONE")
 }

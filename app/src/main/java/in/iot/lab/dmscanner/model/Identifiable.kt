@@ -1,4 +1,4 @@
-package com.meghdut.upsilent.utils
+package `in`.iot.lab.dmscanner.model
 
 interface Identifiable {
     val id: String
