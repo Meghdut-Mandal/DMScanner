@@ -6,6 +6,7 @@ import `in`.iot.lab.dmscanner.databinding.QrScannedBinding
 import `in`.iot.lab.dmscanner.scanner.CodeScanner
 import `in`.iot.lab.dmscanner.scanner.ErrorCallback
 import `in`.iot.lab.dmscanner.scanner.Utils
+import `in`.iot.lab.dmscanner.model.firebaseDataInput
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -26,20 +27,25 @@ import org.opencv.android.OpenCVLoader
 import java.io.FileNotFoundException
 
 class MainActivity2 : AppCompatActivity() {
+    private var fireBaseInput=firebaseDataInput()
     private var mainBinding: ActivityMainBinding? = null
     private lateinit var mCodeScanner: CodeScanner
     private var mPermissionGranted = false
     override fun onCreate(savedInstanceState: Bundle?) {
+
         OpenCVLoader.initDebug()
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding!!.root)
         mCodeScanner = CodeScanner(this, mainBinding!!.scannerView)
         mCodeScanner.setDecodeCallback { result: Result ->
+            fireBaseInput.putInDataBase(result.text.replace("1 tags found","").trim())
             runOnUiThread {
                 displayQR(result.text)
             }
+
         }
+
         mCodeScanner.setErrorCallback(ErrorCallback { error: Exception? ->
             runOnUiThread {
                 Toast.makeText(
@@ -144,4 +150,6 @@ class MainActivity2 : AppCompatActivity() {
             scannedBinding.watchName.text="Titan $name"
         }
     }
+
+
 }

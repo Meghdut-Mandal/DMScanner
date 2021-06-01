@@ -53,7 +53,7 @@ final class DecodeTask {
         PlanarYUVLuminanceSource2 luminanceSource = new PlanarYUVLuminanceSource2(image, imageWidth, imageHeight, frameRect.getLeft(),
                 frameRect.getTop(), frameWidth, frameHeight, mReverseHorizontal);
 
-        String decode = Utils.dmtxDecode2(luminanceSource.renderCroppedGreyscaleBitmap());
+        String decode = Utils.dmtxDecode(luminanceSource.renderCroppedGreyscaleBitmap());
         if (decode != null) {
             return new Result(decode, decode.getBytes(), null, null);
         }

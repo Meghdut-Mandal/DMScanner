@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "614626576227",
+    "firebase_url": "https://dmscanner10-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "dmscanner10",
     "storage_bucket": "dmscanner10.appspot.com"
   },
@@ -13,6 +14,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "614626576227-dns34b61i3gkhmptamc4st6dbk8suiu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.iot.lab.dmscanner",
+            "certificate_hash": "c342fc9da075a75aff3f34c6339afeb8322b3b7a"
+          }
+        },
+        {
+          "client_id": "614626576227-h436bl0sqmf403ugf2pgobbtobn7osfi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.iot.lab.dmscanner",
+            "certificate_hash": "c7681486fc996d045bc0245768368e5b7f2710bb"
+          }
+        },
         {
           "client_id": "614626576227-u6ft6ffa3e62ieqcstsv6ul4v2dn0i3n.apps.googleusercontent.com",
           "client_type": 3
