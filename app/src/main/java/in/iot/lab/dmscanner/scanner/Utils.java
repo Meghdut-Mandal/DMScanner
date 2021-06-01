@@ -340,7 +340,7 @@ public final class Utils {
         }
     }
 
-    private static String dmtxDecode(Bitmap img) {
+    static String dmtxDecode(Bitmap img) {
         System.out.println("DECODING");
         System.out.println(img.getWidth());
         System.out.println(img.getHeight());
