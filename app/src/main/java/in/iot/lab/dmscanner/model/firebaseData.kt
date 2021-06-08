@@ -1,10 +1,6 @@
 package `in`.iot.lab.dmscanner.model
 
-object firebaseData {
-    lateinit var email:String
-    lateinit var id:String
-    var isApproved:Boolean=false
-    lateinit var name:String
-    lateinit var productId:String
-
+data class firebaseData(val email:String,val id:Int,val isApproved:Boolean,val name:String,val productId:String,
+                        val time:Long=System.currentTimeMillis()) {
+    constructor():this("",0,false,"","",0)
 }

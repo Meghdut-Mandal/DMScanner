@@ -1,4 +1,4 @@
-package `in`.iot.lab.dmscanner.ui
+ package `in`.iot.lab.dmscanner.ui
 
 import `in`.iot.lab.dmscanner.R
 import `in`.iot.lab.dmscanner.databinding.ActivityMainBinding
