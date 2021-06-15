@@ -45,6 +45,9 @@ class ProfileActivity : AppCompatActivity() {
                 finishAffinity()
             }
         }
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
     }
 
 

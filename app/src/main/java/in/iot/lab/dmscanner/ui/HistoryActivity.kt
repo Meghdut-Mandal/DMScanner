@@ -1,6 +1,7 @@
 package `in`.iot.lab.dmscanner.ui
 
 import `in`.iot.lab.dmscanner.R
+import `in`.iot.lab.dmscanner.databinding.ActivityHistoryBinding
 import `in`.iot.lab.dmscanner.databinding.QrItemBinding
 import `in`.iot.lab.dmscanner.model.*
 import androidx.appcompat.app.AppCompatActivity
@@ -10,17 +11,20 @@ import com.google.firebase.database.FirebaseDatabase
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import androidx.annotation.NonNull
 import java.util.*
 
 class HistoryActivity : AppCompatActivity() {
 
     val codesAdapter = GenericAdapter(QrItemBinding::inflate, ::itemHandler)
 
+    lateinit var inflate: ActivityHistoryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_history)
-        val rView=findViewById<RecyclerView>(R.id.qrList)
+        inflate = ActivityHistoryBinding.inflate(layoutInflater)
+        setContentView(inflate.root)
+        val rView=inflate.qrList
         rView.adapter=codesAdapter
         rView.layoutManager=LinearLayoutManager(this)
     }
@@ -53,5 +57,9 @@ class HistoryActivity : AppCompatActivity() {
             Log.d("Data",dataList.toString())
             codesAdapter.submitList(dataList)
         }
+        inflate.toolbar.setNavigationOnClickListener {
+           onBackPressed()
+        }
+
     }
 }
